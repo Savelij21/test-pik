@@ -1,9 +1,12 @@
 import sqlalchemy as sa
 import geoalchemy2 as gsa
-from geoalchemy2.shape import to_shape
 import json
+
 from shapely.geometry import shape
 from pathlib import Path
+
+from sqlalchemy import func
+
 import config
 
 # инициализация БД
@@ -32,6 +35,7 @@ with eng.begin() as conn:
             input_data
         )
 
+
 def to_geojson(records):
     features = []
     for r in records:
@@ -44,4 +48,33 @@ def to_geojson(records):
 def get_all():
     with eng.connect() as conn:
         cur = conn.execute(sa.select([table.c.id, table.c.name, table.c.geometry.ST_AsGeoJSON().label('geometry')]))
+        return to_geojson(cur)
+
+
+# DEVELOPMENT
+def get_a_b():
+    with eng.connect() as conn:
+        cur = conn.execute(sa.select([table.c.id, table.c.name, table.c.geometry.ST_AsGeoJSON().label('geometry')]))
+        return to_geojson(cur)
+
+
+def get_a():
+    with eng.connect() as conn:
+        cur = conn.execute(sa.select([table.c.id, table.c.name, table.c.geometry.ST_AsGeoJSON().label('geometry')]).where(table.c.id == 1))
+        return to_geojson(cur)
+
+
+def get_b():
+    with eng.connect() as conn:
+        cur = conn.execute(sa.select([table.c.id, table.c.name, table.c.geometry.ST_AsGeoJSON().label('geometry')]).where(table.c.id == 2))
+        return to_geojson(cur)
+
+
+def get_intersection_a_b():
+    with eng.connect() as conn:
+        cur = conn.execute(sa.select([func.ST_AsGeoJSON(func.ST_Intersection(
+            sa.select(table.c.geometry).where(table.c.id == 1),
+            sa.select(table.c.geometry).where(table.c.id == 2)
+        )).label('geometry')]))
+
         return to_geojson(cur)
