@@ -16,10 +16,26 @@ export class LayersService {
     });
 
   constructor(
-    private readonly http: HttpClient, 
+    private readonly http: HttpClient,
   ) { }
 
   public fetchLayer(): Observable<GeoJSON> {
     return this.http.get<GeoJSON>(`${this.API}/`);
+  }
+
+  public fetchLayerAB(): Observable<GeoJSON> {
+    return this.http.get<GeoJSON>(`${this.API}/a_b/`);
+  }
+
+  public fetchLayerA(): Observable<GeoJSON> {
+    return this.http.get<GeoJSON>(`${this.API}/a/`);
+  }
+
+  public fetchLayerB(): Observable<GeoJSON> {
+    return this.http.get<GeoJSON>(`${this.API}/b/`);
+  }
+
+  public fetchLayerIntAB(): Observable<GeoJSON> {
+    return this.http.get<GeoJSON>(`${this.API}/int_a_b/`);
   }
 }

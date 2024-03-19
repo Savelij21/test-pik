@@ -1,3 +1,15 @@
 <div class="map-container">
   <div id="map"></div>
+
+  <div id="tool">
+    <h3>Управление</h3>
+    <p>С помощью кнопок вы можете переключать отображение слоев A и B, а так же их пересечение</p>
+    <div class="button-container">
+      <button (click)="onButtonClick1()" [ngClass]="{ 'selected': isButtonSelected(1) }">A & B</button>
+      <button (click)="onButtonClick2()" [ngClass]="{ 'selected': isButtonSelected(2) }">A</button>
+      <button (click)="onButtonClick3()" [ngClass]="{ 'selected': isButtonSelected(3) }">B</button>
+      <button (click)="onButtonClick4()" [ngClass]="{ 'selected': isButtonSelected(4) }">A u B</button>
+    </div>
+  </div>
 </div>
+
